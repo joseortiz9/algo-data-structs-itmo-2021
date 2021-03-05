@@ -4,10 +4,12 @@
 
 using namespace std;
 
+bool e;
+
 bool solve(vector<char> a, bool p) {
     if (!p) return false;
     if (string(a.begin(), a.end()).empty()) return true;
-    bool e = false;
+    e = false;
     for (size_t i = 0; i < a.size(); i++) {
         if (i+1 < a.size() && (tolower(a[i]) == tolower(a[i + 1]))) {
             a.erase(a.begin()+i);
