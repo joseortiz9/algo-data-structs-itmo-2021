@@ -6,14 +6,13 @@ using namespace std;
 
 bool e;
 
-bool solve(vector<char> a, bool p) {
+bool solve(string a, bool p) {
     if (!p) return false;
-    if (string(a.begin(), a.end()).empty()) return true;
+    if (a.empty()) return true;
     e = false;
     for (size_t i = 0; i < a.size(); i++) {
         if (i+1 < a.size() && (tolower(a[i]) == tolower(a[i + 1]))) {
-            a.erase(a.begin()+i);
-            a.erase(a.begin()+i);
+            a.erase(a.begin()+i, a.begin()+i+2);
             e = true;
             break;
         }
@@ -22,25 +21,24 @@ bool solve(vector<char> a, bool p) {
 }
 
 int main() {
-    string a;
-    cin >> a;
-    vector<char> v(a.begin(), a.end()), mayusVector;
-    map<char, int> lowerMap;
+    string s; cin >> s;
+    map<char,int> v;
     int mayus = 1, lower = 1;
-    for (char & i : v) {
+    for (char & i : s) {
         if (islower(i)) {
-            lowerMap[i] = lower;
+            v[i] = (lower);
             lower += 1;
         } else {
-            mayusVector.push_back(i);
+            v[i] = (mayus);
             mayus += 1;
         }
     }
-    bool p = solve(v, true);
+    bool p = solve(s, true);
     cout << ((p) ? "Possible" : "Impossible") << endl;
     if (p) {
-        for (char &i : mayusVector) {
-            cout << lowerMap.at(tolower(i)) << " ";
+        for (auto &b : v) {
+            if (islower(b.first)) break;
+            cout << v.at(tolower(b.first)) << " ";
         }
     }
 }
