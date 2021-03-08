@@ -1,3 +1,6 @@
+//
+// Created by joseortiz9 on 3/08/21.
+//
 #include <iostream>
 #include <vector>
 #include <map>
@@ -34,11 +37,14 @@ int main() {
         }
     }
     bool p = solve(s, true);
-    cout << ((p) ? "Possible" : "Impossible") << endl;
     if (p) {
+        cout << "Possible\n";
         for (auto &b : v) {
             if (islower(b.first)) break;
             cout << v.at(tolower(b.first)) << " ";
         }
+    } else {
+        cout << "Impossible";
     }
+    return cout << "\n", 0;
 }

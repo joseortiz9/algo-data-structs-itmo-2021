@@ -1,3 +1,6 @@
+//
+// Created by joseortiz9 on 3/08/21.
+//
 #include <iostream>
 #include <vector>
 #include <map>
@@ -9,7 +12,8 @@ void solve() {
     int d = 0;
     string line;
     string value[2];
-    while(cin) {
+    while(cin >> line) {
+
         if (line == "{") {
             d += 1;
             continue;
@@ -25,7 +29,7 @@ void solve() {
         value[0] = line.substr(0, line.find('='));
         value[1] = line.substr(line.find('=') + 1);
 
-        //if the assign val is a number
+        // if the assign right val is a number
         if (isdigit(value[1][0]) || value[1][0] == '-') {
             if (v.count(value[0]) > 0) {
                 v.at(value[0]).push_back(make_pair(stoi(value[1]), d));
@@ -34,14 +38,17 @@ void solve() {
                 v[value[0]] = v1;
             }
         } else {
-
-        }
-    }
-
-    for (auto &p : v) {
-        cout << p.first << endl;
-        for (auto & i : p.second) {
-            cout << "{" << to_string(i.first) << ": " << to_string(i.second) << "}, ";
+            if (v.count(value[0]) > 0) {
+                v.at(value[0]).push_back(v[value[1]].back());
+            } else {
+                vector<pair<int, int>> v1;
+                if (v.count(value[1]) > 0)
+                    v1.push_back(v[value[1]].back());
+                else
+                    v1.emplace_back(0,d);
+                v[value[0]] = v1;
+            }
+            cout << v[value[0]].back().first << endl;
         }
     }
 }

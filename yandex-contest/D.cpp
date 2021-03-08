@@ -1,14 +1,25 @@
+//
+// Created by joseortiz9 on 3/08/21.
+//
 #include <iostream>
 using namespace std;
 
 void solve() {
-    int n, start = 1, end = 1;
-    cin >> n;
-    int a[n];
-    for(int i=0; i<n; i++) {
-        cin >> a[i];
+    int a, b, c, d, k, r, t;
+    cin >> a >> b >> c >> d >> k;
+    t=k;
+    while (t--) {
+        if (t+1==k) r = a * b;
+        else r = r * b;
+        if (r <= c) {
+            r = 0;
+            break;
+        } else {
+            r = r - c;
+        }
+        if (r > d) r = d;
     }
-
+    cout << r;
 }
 
 
