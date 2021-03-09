@@ -5,21 +5,32 @@
 using namespace std;
 
 void solve() {
-    int a, b, c, d, k, r, t;
+    long long a, b, c, d, k, r;
     cin >> a >> b >> c >> d >> k;
-    t=k;
-    while (t--) {
-        if (t+1==k) r = a * b;
-        else r = r * b;
-        if (r <= c) {
+    if (a * b <= c) {
+        cout << 0 << endl;
+        return;
+    }
+    r = a * b - c;
+    if (r == a) {
+        cout << a << endl;
+        return;
+    } else if (r >= d) {
+        cout << d << endl;
+        return;
+    }
+    while (k--) {
+        r = r * b - c;
+        if (r < 0) {
             r = 0;
             break;
-        } else {
-            r = r - c;
         }
-        if (r > d) r = d;
+        if (r >= d) {
+            r = d;
+            break;
+        }
     }
-    cout << r;
+    cout << r << endl;
 }
 
 
@@ -28,4 +39,5 @@ int main() {
     cin.tie(nullptr);
 
     solve();
+    return 0;
 }
