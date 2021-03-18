@@ -7,18 +7,7 @@ using namespace std;
 void solve() {
     long long a, b, c, d, k, r;
     cin >> a >> b >> c >> d >> k;
-    if (a * b <= c) {
-        cout << 0 << endl;
-        return;
-    }
-    r = a * b - c;
-    if (r == a) {
-        cout << a << endl;
-        return;
-    } else if (r >= d) {
-        cout << d << endl;
-        return;
-    }
+    r = a;
     while (k--) {
         r = r * b - c;
         if (r < 0) {
@@ -28,6 +17,10 @@ void solve() {
         if (r >= d) {
             r = d;
             break;
+        }
+        if (r == a && r <= d) {
+            cout << a << endl;
+            return;
         }
     }
     cout << r << endl;

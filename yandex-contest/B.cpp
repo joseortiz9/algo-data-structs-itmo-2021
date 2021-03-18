@@ -7,40 +7,48 @@
 
 using namespace std;
 
+bool areEqualLetters(char a, char b) {
+    if ((isupper(a) && isupper(b)) || (islower(a) && islower(b)))
+        return false;
+    return ((tolower(a) == b) || (a == tolower(b)));
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
     string s; cin >> s;
-    vector<char> stack(0);
-    map<char,int> v;
+    vector<char> t(0);
+    map<int, pair<char, int>> values;
+    vector<int> indexes;
     int mayus = 1, lower = 1;
-    for (char & i : s) {
-        if (islower(i)) {
-            v[i] = (lower);
+    for (int i=0; i<s.length(); i++) {
+        if (islower(s[i])) {
+            values[i] = make_pair(s[i], lower);
             lower += 1;
         } else {
-            v[i] = (mayus);
+            values[i] = make_pair(s[i], mayus);
             mayus += 1;
         }
     }
 
-    for (char & i : s) {
-        if (!stack.empty() && (tolower(stack.back()) == tolower(i))) {
-            stack.pop_back();
+    for (int i=0; i<s.length(); i++) {
+        if (!t.empty() && areEqualLetters(t.back(), s[i])) {
+            if (isupper(s[i])) {
+                indexes.push_back(values.at(i-1).second);
+            }
+            t.pop_back();
         } else {
-            stack.push_back(i);
+            t.push_back(s[i]);
         }
     }
 
-    if (stack.empty()) {
-        cout << "Possible" << endl;
-        for (auto &b : v) {
-            if (islower(b.first)) break;
-            cout << v.at(tolower(b.first)) << " ";
-        }
-    } else {
-        cout << "Impossible";
+    if (!t.empty()) {
+        cout << "Impossible" << endl;
+        return 0;
     }
-    return cout << "\n", 0;
+    cout << "Possible" << endl;
+    for (int &i : indexes) cout << i << " ";
+    cout << endl;
+    return 0;
 }
