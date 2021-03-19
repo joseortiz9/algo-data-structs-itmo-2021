@@ -9,22 +9,32 @@ using namespace std;
 
 void solve() {
     map<string, vector<pair<string, int>>> v;
+    vector<string> changed;
+    vector<pair<string, int>> e;
     int d = 0;
     string line;
     pair<string, string> value;
     while(cin >> line) {
-//        if (line == "ji") break;
 
         if (line == "{") {
             ++d;
         } else if (line == "}") {
-            for (auto &p : v) {
-                if (p.second.back().second == d)
-                    p.second.pop_back();
+            for (string & c : changed) {
+                e = v.at(c);
+                for (auto i = e.rbegin(); i != e.rend(); ++i) {
+                    if (i->second == d) {
+                        e.pop_back();
+                    } else break;
+                }
+                v.at(c) = e;
+//                while(p.second.back().second==d){
+//                    p.second.pop_back();
+//                }
             }
             --d;
         } else {
             value = make_pair(line.substr(0, line.find('=')), line.substr(line.find('=') + 1));
+            changed.push_back(value.first);
 
             // if the assign right val is a number
             if (isdigit(value.second[0]) || value.second[0] == '-') {
