@@ -8,65 +8,47 @@
 using namespace std;
 
 void solve() {
-    map<string, vector<pair<string, int>>> v;
-    vector<string> changed;
-    vector<pair<string, int>> e;
-    int d = 0;
+    map<string, vector<string>> v;
+    vector<vector<string>>changed;
+    vector<string> curr;
     string line;
     pair<string, string> value;
     while(cin >> line) {
-
         if (line == "{") {
-            ++d;
+            changed.push_back(curr);
+            curr.clear();
         } else if (line == "}") {
-            for (string & c : changed) {
-                e = v.at(c);
-                for (auto i = e.rbegin(); i != e.rend(); ++i) {
-                    if (i->second == d) {
-                        e.pop_back();
-                    } else break;
+            for (auto &p : curr) {
+                if (v.at(p).size()==1){
+                    v.at(p).back()="0";
                 }
-                v.at(c) = e;
-//                while(p.second.back().second==d){
-//                    p.second.pop_back();
-//                }
+                else v.at(p).pop_back();
             }
-            --d;
+            curr.clear();
+            curr = changed.back();
+            changed.pop_back();
         } else {
             value = make_pair(line.substr(0, line.find('=')), line.substr(line.find('=') + 1));
-            changed.push_back(value.first);
-
             // if the assign right val is a number
-            if (isdigit(value.second[0]) || value.second[0] == '-') {
-                if (v.count(value.first) > 0) {
-                    v.at(value.first).push_back(make_pair(value.second, d));
-                } else {
-                    v.insert({value.first, {make_pair(value.second, d)}});
+            if (!isdigit(value.second[0]) && value.second[0] != '-')
+            {
+                if (v.count(value.second) != 0){
+                    value.second = v.at(value.second).back();
                 }
-            } else {
-                if (v.count(value.second) == 0) {
-                    v.insert({value.second, {make_pair("0", d)}});
-                } else if (v.at(value.second).empty()) {
-                    v.at(value.second).push_back(make_pair("0", d));
+                else{
+                    value.second = "0";
                 }
-                if (v.count(value.first) > 0) {
-                    if (v.at(value.first).back() != v.at(value.second).back())
-                        v.at(value.first).push_back(make_pair(v.at(value.second).back().first, d));
-                } else {
-                    v.insert({value.first, {make_pair(v.at(value.second).back().first, d)}});
-                }
-                cout << v.at(value.first).back().first << endl;
+                cout<<value.second<<endl;
+            }
+            curr.push_back(value.first);
+            if (v.count(value.first) != 0){
+                v.at(value.first).push_back(value.second);
+            }
+            else {
+                v.insert({value.first, {value.second}});
             }
         }
     }
-
-//    for (auto &p : v) {
-//        cout << p.first << endl;
-//        for (auto & i : p.second) {
-//            cout << "{" << i.first << ": " << to_string(i.second) << "}, ";
-//        }
-//        cout << "\n" << endl;
-//    }
 }
 
 
