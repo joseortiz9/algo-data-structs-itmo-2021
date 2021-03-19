@@ -8,27 +8,12 @@
 
 using namespace std;
 
-vector<char> t(0);
-vector<pair<char, int>> values;
-vector<int> indexes;
+vector<pair<char, int>> values, t(0);
 
 bool areEqualLetters(char a, char b) {
     if ((isupper(a) && isupper(b)) || (islower(a) && islower(b)))
         return false;
     return ((tolower(a) == b) || (a == tolower(b)));
-}
-
-int searchForOrder(int index, char letter) {
-    int j = -1;
-    for (int i = index; 0 <= i; i--) {
-        if (values[i].second == -1) continue;
-        if (letter == values[i].first) {
-            j = values[i].second;
-            values[i].second = -1;
-            break;
-        }
-    }
-    return j;
 }
 
 int main() {
@@ -47,20 +32,17 @@ int main() {
         }
     }
 
-    int indexMayus;
-    indexes.resize(s.size()/2, 0);
-    for (int i = 0; i < s.size(); i++) {
-        if (!t.empty() && areEqualLetters(t.back(), s[i])) {
-            if (isupper(s[i])) {
-                indexMayus = searchForOrder(i, s[i]);
-                indexes[indexMayus-1] = searchForOrder(i, t.back());
+    vector<int> indexes(values.size()/2, 0);
+    for (auto & value : values) {
+        if (!t.empty() && areEqualLetters(t.back().first, value.first)) {
+            if (isupper(value.first)) {
+                indexes[value.second-1] = t.back().second;
             } else {
-                indexMayus = searchForOrder(i, t.back());
-                indexes[indexMayus-1] = searchForOrder(i, s[i]);
+                indexes[t.back().second-1] = value.second;
             }
             t.pop_back();
         } else {
-            t.push_back(s[i]);
+            t.push_back(value);
         }
     }
 
